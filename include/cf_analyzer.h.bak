@@ -1,0 +1,48 @@
+#ifndef CF_ANALYZER_H
+#define CF_ANALYZER_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+typedef struct {
+    char handle[64];
+    int rating;
+    char rank[32];
+    int max_rating;
+    char max_rank[32];
+    int contest_count;
+} UserInfo;
+
+typedef struct {
+    int contest_id;
+    char contest_name[128];
+    int old_rating;
+    int new_rating;
+    int rank;
+    int rating_change;
+    time_t timestamp;
+} ContestRecord;
+
+typedef struct {
+    int contest_id;
+    char problem_index[8];
+    char problem_name[64];
+    int problem_rating;
+    char verdict[32];
+    time_t timestamp;
+} Submission;
+
+UserInfo* get_user_info(const char* handle);
+ContestRecord* get_user_contests(const char* handle, int* count);
+Submission* get_user_submissions(const char* handle, int* count);
+char* generate_html_report(const char* handle, UserInfo* user, ContestRecord* contests, int contest_count);
+
+const char* get_rating_color(int rating);
+int is_recent(time_t timestamp, int days);
+void get_recent_stats(ContestRecord* contests, int count, int* recent_count, int* max_rating_180);
+
+char* generate_html_report(const char* handle, UserInfo* user, ContestRecord* contests, int contest_count);
+
+#endif

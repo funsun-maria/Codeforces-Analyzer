@@ -1,0 +1,3092 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>CF分析报告 - tourist</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Arial; background: linear-gradient(135deg, #667eea, #764ba2); min-height: 100vh; padding: 20px; }
+        .box { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; }
+        .head { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 40px; text-align: center; }
+        .name { font-size: 48px; font-weight: bold; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; padding: 30px; background: #f8f9fa; }
+        .card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .card-value { font-size: 32px; font-weight: bold; }
+        .chart-box { height: 450px; margin: 30px; padding: 20px; background: white; border-radius: 15px; }
+        .table-box { margin: 30px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #667eea; color: white; padding: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .up { color: green; font-weight: bold; }
+        .down { color: red; font-weight: bold; }
+        .foot { text-align: center; padding: 20px; background: #f8f9fa; color: #666; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="head">
+        <div class="name" style="color: #FF0000">tourist</div>
+        <div>legendary grandmaster</div>
+    </div>
+    <div class="cards">
+        <div class="card"><div>当前分</div><div class="card-value" style="color: #FF0000">3428</div></div>
+        <div class="card"><div>历史最高</div><div class="card-value" style="color: #FF0000">4009</div></div>
+        <div class="card"><div>参赛次数</div><div class="card-value">303</div></div>
+        <div class="card"><div>近180天</div><div class="card-value">12</div></div>
+        <div class="card"><div>近180天最高</div><div class="card-value" style="color: #FF0000">3755</div></div>
+    </div>
+    <div class="chart-box">
+        <div id="scoreChart" style="height: 100%;"></div>
+    </div>
+    <script>
+        var myChart = echarts.init(document.getElementById('scoreChart'));
+        myChart.setOption({
+            title: { text: '分数变化趋势', left: 'center' },
+            tooltip: { trigger: 'axis' },
+            xAxis: { type: 'category', data: ['Codeforces Round 908 (Div. 1)', 'CodeTON Round 7 (Div. 1 + Div. 2, Rated, Prizes!)', 'Pinely Round 3 (Div. 1 + Div. 2)', 'Good Bye 2023', 'Hello 2024', 'think-cell Round 1', 'Codeforces Round 930 (Div. 1)', 'Codeforces Round 934 (Div. 1)', 'CodeTON Round 8 (Div. 1 + Div. 2, Rated, Prizes!)', 'Codeforces Round 942 (Div. 1)', 'Codeforces Round 947 (Div. 1 + Div. 2)', 'Codeforces Global Round 26', 'EPIC Institute of Technology Round Summer 2024 (Div. 1 + Div. 2)', 'Codeforces Round 959 sponsored by NEAR (Div. 1 + Div. 2)', 'Pinely Round 4 (Div. 1 + Div. 2)', 'Codeforces Round 969 (Div. 1)', 'CodeTON Round 9 (Div. 1 + Div. 2, Rated, Prizes!)', 'Rayan Programming Contest 2024 - Selection (Codeforces Round 989, Div. 1 + Div. 2)', 'Hello 2025', 'IAEPC Preliminary Contest (Codeforces Round 999, Div. 1 + Div. 2)', 'Ethflow Round 1 (Codeforces Round 1001, Div. 1 + Div. 2)', 'Codeforces Round 1004 (Div. 1)', 'Codeforces Round 1008 (Div. 1)', 'Codeforces Round 1012 (Div. 1)', 'Teza Round 1 (Codeforces Round 1015, Div. 1 + Div. 2)', 'Neowise Labs Contest 1 (Codeforces Round 1018, Div. 1 + Div. 2)', 'Codeforces Round 1021 (Div. 1)', 'Codeforces Round 1024 (Div. 1)', 'Codeforces Round 1028 (Div. 1)', 'EPIC Institute of Technology Round Summer 2025 (Codeforces Round 1036, Div. 1 + Div. 2)', 'Order Capital Round 1 (Codeforces Round 1038, Div. 1 + Div. 2)', 'Atto Round 1 (Codeforces Round 1041, Div. 1 + Div. 2)', 'Codeforces Round 1046 (Div. 1)', 'Squarepoint Challenge (Codeforces Round 1055, Div. 1 + Div. 2)', 'Codeforces Round 1058 (Div. 1)', 'Pinely Round 5 (Div. 1 + Div. 2)', 'Codeforces Global Round 30 (Div. 1 + Div. 2)', 'Codeforces Round 1066 (Div. 1 + Div. 2)', 'Codeforces Global Round 31 (Div. 1 + Div. 2)', 'Good Bye 2025', 'Hello 2026', 'Codeforces Round 1073 (Div. 1)', 'Codeforces Round 1077 (Div. 1)', 'Codeforces Round 1079 (Div. 1)', 'Codeforces Round 1082 (Div. 1)', 'Codeforces Round 1085 (Div. 1 + Div. 2)', 'Nebius Round 2 (Codeforces Round 1088, Div. 1 + Div. 2)', 'Codeforces Round 1093 (Div. 1)', 'Spectral::Cup 2026 Round 1 (Codeforces Round 1094, Div. 1 + Div. 2)', 'Spectral::Cup 2026 Round 2 (Codeforces Round 1100, Div. 1 + Div. 2)'], axisLabel: { rotate: 45 } },
+            yAxis: { type: 'value', name: '分数' },
+            series: [{ name: '分数', type: 'line', data: [3584, 3485, 3375, 3330, 3375, 3395, 3434, 3572, 3565, 3690, 3757, 3845, 3803, 3880, 3947, 4009, 3993, 3985, 3815, 3841, 3840, 3857, 3798, 3892, 3796, 3761, 3850, 3843, 3777, 3723, 3820, 3791, 3619, 3616, 3629, 3747, 3652, 3757, 3718, 3583, 3478, 3513, 3533, 3593, 3718, 3719, 3755, 3544, 3473, 3428], smooth: true, lineStyle: { width: 3, color: '#667eea' }, areaStyle: { opacity: 0.3 } }]
+        });
+    </script>
+    <h2 style="margin: 0 30px;">比赛记录</h2>
+    <div class="table-box">
+        <table>
+            <tr><th>比赛名称</th><th>日期</th><th>赛前分</th><th>赛后分</th><th>变化</th><th>排名</th><th>赛中</th><th>补题</th></tr>
+            <tr>
+                <td>Spectral::Cup 2026 Round 2 (Codeforces Round 1100, Div. 1 + Div. 2)</td>
+                <td>2026-05-24</td>
+                <td style="color: #FF0000">3473</td>
+                <td style="color: #FF0000">3428</td>
+                <td class="down">-45</td>
+                <td>11</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Spectral::Cup 2026 Round 1 (Codeforces Round 1094, Div. 1 + Div. 2)</td>
+                <td>2026-04-26</td>
+                <td style="color: #FF0000">3544</td>
+                <td style="color: #FF0000">3473</td>
+                <td class="down">-71</td>
+                <td>13</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1093 (Div. 1)</td>
+                <td>2026-04-14</td>
+                <td style="color: #FF0000">3755</td>
+                <td style="color: #FF0000">3544</td>
+                <td class="down">-211</td>
+                <td>42</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Nebius Round 2 (Codeforces Round 1088, Div. 1 + Div. 2)</td>
+                <td>2026-03-29</td>
+                <td style="color: #FF0000">3719</td>
+                <td style="color: #FF0000">3755</td>
+                <td class="up">+36</td>
+                <td>2</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1085 (Div. 1 + Div. 2)</td>
+                <td>2026-03-09</td>
+                <td style="color: #FF0000">3718</td>
+                <td style="color: #FF0000">3719</td>
+                <td class="up">+1</td>
+                <td>3</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1082 (Div. 1)</td>
+                <td>2026-02-24</td>
+                <td style="color: #FF0000">3593</td>
+                <td style="color: #FF0000">3718</td>
+                <td class="up">+125</td>
+                <td>1</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1079 (Div. 1)</td>
+                <td>2026-02-12</td>
+                <td style="color: #FF0000">3533</td>
+                <td style="color: #FF0000">3593</td>
+                <td class="up">+60</td>
+                <td>2</td>
+                <td>7</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1077 (Div. 1)</td>
+                <td>2026-01-30</td>
+                <td style="color: #FF0000">3513</td>
+                <td style="color: #FF0000">3533</td>
+                <td class="up">+20</td>
+                <td>5</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1073 (Div. 1)</td>
+                <td>2026-01-18</td>
+                <td style="color: #FF0000">3478</td>
+                <td style="color: #FF0000">3513</td>
+                <td class="up">+35</td>
+                <td>4</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Hello 2026</td>
+                <td>2026-01-08</td>
+                <td style="color: #FF0000">3583</td>
+                <td style="color: #FF0000">3478</td>
+                <td class="down">-105</td>
+                <td>25</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2025</td>
+                <td>2025-12-28</td>
+                <td style="color: #FF0000">3718</td>
+                <td style="color: #FF0000">3583</td>
+                <td class="down">-135</td>
+                <td>28</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 31 (Div. 1 + Div. 2)</td>
+                <td>2025-12-20</td>
+                <td style="color: #FF0000">3757</td>
+                <td style="color: #FF0000">3718</td>
+                <td class="down">-39</td>
+                <td>6</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1066 (Div. 1 + Div. 2)</td>
+                <td>2025-11-23</td>
+                <td style="color: #FF0000">3652</td>
+                <td style="color: #FF0000">3757</td>
+                <td class="up">+105</td>
+                <td>1</td>
+                <td>8</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 30 (Div. 1 + Div. 2)</td>
+                <td>2025-11-07</td>
+                <td style="color: #FF0000">3747</td>
+                <td style="color: #FF0000">3652</td>
+                <td class="down">-95</td>
+                <td>11</td>
+                <td>7</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Pinely Round 5 (Div. 1 + Div. 2)</td>
+                <td>2025-10-31</td>
+                <td style="color: #FF0000">3629</td>
+                <td style="color: #FF0000">3747</td>
+                <td class="up">+118</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1058 (Div. 1)</td>
+                <td>2025-10-13</td>
+                <td style="color: #FF0000">3616</td>
+                <td style="color: #FF0000">3629</td>
+                <td class="up">+13</td>
+                <td>4</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Squarepoint Challenge (Codeforces Round 1055, Div. 1 + Div. 2)</td>
+                <td>2025-10-04</td>
+                <td style="color: #FF0000">3619</td>
+                <td style="color: #FF0000">3616</td>
+                <td class="down">-3</td>
+                <td>6</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1046 (Div. 1)</td>
+                <td>2025-08-29</td>
+                <td style="color: #FF0000">3791</td>
+                <td style="color: #FF0000">3619</td>
+                <td class="down">-172</td>
+                <td>20</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Atto Round 1 (Codeforces Round 1041, Div. 1 + Div. 2)</td>
+                <td>2025-08-08</td>
+                <td style="color: #FF0000">3820</td>
+                <td style="color: #FF0000">3791</td>
+                <td class="down">-29</td>
+                <td>4</td>
+                <td>8</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Order Capital Round 1 (Codeforces Round 1038, Div. 1 + Div. 2)</td>
+                <td>2025-07-20</td>
+                <td style="color: #FF0000">3723</td>
+                <td style="color: #FF0000">3820</td>
+                <td class="up">+97</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>EPIC Institute of Technology Round Summer 2025 (Codeforces Round 1036, Div. 1 + Div. 2)</td>
+                <td>2025-07-07</td>
+                <td style="color: #FF0000">3777</td>
+                <td style="color: #FF0000">3723</td>
+                <td class="down">-54</td>
+                <td>4</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1028 (Div. 1)</td>
+                <td>2025-06-01</td>
+                <td style="color: #FF0000">3843</td>
+                <td style="color: #FF0000">3777</td>
+                <td class="down">-66</td>
+                <td>6</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1024 (Div. 1)</td>
+                <td>2025-05-12</td>
+                <td style="color: #FF0000">3850</td>
+                <td style="color: #FF0000">3843</td>
+                <td class="down">-7</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1021 (Div. 1)</td>
+                <td>2025-04-26</td>
+                <td style="color: #FF0000">3761</td>
+                <td style="color: #FF0000">3850</td>
+                <td class="up">+89</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Neowise Labs Contest 1 (Codeforces Round 1018, Div. 1 + Div. 2)</td>
+                <td>2025-04-20</td>
+                <td style="color: #FF0000">3796</td>
+                <td style="color: #FF0000">3761</td>
+                <td class="down">-35</td>
+                <td>5</td>
+                <td>7</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Teza Round 1 (Codeforces Round 1015, Div. 1 + Div. 2)</td>
+                <td>2025-04-06</td>
+                <td style="color: #FF0000">3892</td>
+                <td style="color: #FF0000">3796</td>
+                <td class="down">-96</td>
+                <td>8</td>
+                <td>7</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1012 (Div. 1)</td>
+                <td>2025-03-23</td>
+                <td style="color: #FF0000">3798</td>
+                <td style="color: #FF0000">3892</td>
+                <td class="up">+94</td>
+                <td>1</td>
+                <td>7</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1008 (Div. 1)</td>
+                <td>2025-03-11</td>
+                <td style="color: #FF0000">3857</td>
+                <td style="color: #FF0000">3798</td>
+                <td class="down">-59</td>
+                <td>4</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 1004 (Div. 1)</td>
+                <td>2025-02-12</td>
+                <td style="color: #FF0000">3840</td>
+                <td style="color: #FF0000">3857</td>
+                <td class="up">+17</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Ethflow Round 1 (Codeforces Round 1001, Div. 1 + Div. 2)</td>
+                <td>2025-01-27</td>
+                <td style="color: #FF0000">3841</td>
+                <td style="color: #FF0000">3840</td>
+                <td class="down">-1</td>
+                <td>3</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>IAEPC Preliminary Contest (Codeforces Round 999, Div. 1 + Div. 2)</td>
+                <td>2025-01-21</td>
+                <td style="color: #FF0000">3815</td>
+                <td style="color: #FF0000">3841</td>
+                <td class="up">+26</td>
+                <td>2</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Hello 2025</td>
+                <td>2025-01-05</td>
+                <td style="color: #FF0000">3985</td>
+                <td style="color: #FF0000">3815</td>
+                <td class="down">-170</td>
+                <td>13</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Rayan Programming Contest 2024 - Selection (Codeforces Round 989, Div. 1 + Div. 2)</td>
+                <td>2024-12-01</td>
+                <td style="color: #FF0000">3993</td>
+                <td style="color: #FF0000">3985</td>
+                <td class="down">-8</td>
+                <td>2</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 9 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2024-11-24</td>
+                <td style="color: #FF0000">4009</td>
+                <td style="color: #FF0000">3993</td>
+                <td class="down">-16</td>
+                <td>2</td>
+                <td>10</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 969 (Div. 1)</td>
+                <td>2024-08-31</td>
+                <td style="color: #FF0000">3947</td>
+                <td style="color: #FF0000">4009</td>
+                <td class="up">+62</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Pinely Round 4 (Div. 1 + Div. 2)</td>
+                <td>2024-07-29</td>
+                <td style="color: #FF0000">3880</td>
+                <td style="color: #FF0000">3947</td>
+                <td class="up">+67</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 959 sponsored by NEAR (Div. 1 + Div. 2)</td>
+                <td>2024-07-19</td>
+                <td style="color: #FF0000">3803</td>
+                <td style="color: #FF0000">3880</td>
+                <td class="up">+77</td>
+                <td>1</td>
+                <td>8</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>EPIC Institute of Technology Round Summer 2024 (Div. 1 + Div. 2)</td>
+                <td>2024-07-01</td>
+                <td style="color: #FF0000">3845</td>
+                <td style="color: #FF0000">3803</td>
+                <td class="down">-42</td>
+                <td>3</td>
+                <td>9</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 26</td>
+                <td>2024-06-10</td>
+                <td style="color: #FF0000">3757</td>
+                <td style="color: #FF0000">3845</td>
+                <td class="up">+88</td>
+                <td>1</td>
+                <td>9</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 947 (Div. 1 + Div. 2)</td>
+                <td>2024-05-26</td>
+                <td style="color: #FF0000">3690</td>
+                <td style="color: #FF0000">3757</td>
+                <td class="up">+67</td>
+                <td>1</td>
+                <td>8</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 942 (Div. 1)</td>
+                <td>2024-05-01</td>
+                <td style="color: #FF0000">3565</td>
+                <td style="color: #FF0000">3690</td>
+                <td class="up">+125</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 8 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2024-03-31</td>
+                <td style="color: #FF0000">3572</td>
+                <td style="color: #FF0000">3565</td>
+                <td class="down">-7</td>
+                <td>6</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 934 (Div. 1)</td>
+                <td>2024-03-17</td>
+                <td style="color: #FF0000">3434</td>
+                <td style="color: #FF0000">3572</td>
+                <td class="up">+138</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 930 (Div. 1)</td>
+                <td>2024-03-01</td>
+                <td style="color: #FF0000">3395</td>
+                <td style="color: #FF0000">3434</td>
+                <td class="up">+39</td>
+                <td>4</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>think-cell Round 1</td>
+                <td>2024-02-18</td>
+                <td style="color: #FF0000">3375</td>
+                <td style="color: #FF0000">3395</td>
+                <td class="up">+20</td>
+                <td>7</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Hello 2024</td>
+                <td>2024-01-07</td>
+                <td style="color: #FF0000">3330</td>
+                <td style="color: #FF0000">3375</td>
+                <td class="up">+45</td>
+                <td>7</td>
+                <td>7</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2023</td>
+                <td>2023-12-31</td>
+                <td style="color: #FF0000">3375</td>
+                <td style="color: #FF0000">3330</td>
+                <td class="down">-45</td>
+                <td>22</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Pinely Round 3 (Div. 1 + Div. 2)</td>
+                <td>2023-12-24</td>
+                <td style="color: #FF0000">3485</td>
+                <td style="color: #FF0000">3375</td>
+                <td class="down">-110</td>
+                <td>33</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 7 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2023-11-26</td>
+                <td style="color: #FF0000">3584</td>
+                <td style="color: #FF0000">3485</td>
+                <td class="down">-99</td>
+                <td>18</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 908 (Div. 1)</td>
+                <td>2023-11-08</td>
+                <td style="color: #FF0000">3557</td>
+                <td style="color: #FF0000">3584</td>
+                <td class="up">+27</td>
+                <td>4</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 906 (Div. 1)</td>
+                <td>2023-10-29</td>
+                <td style="color: #FF0000">3775</td>
+                <td style="color: #FF0000">3557</td>
+                <td class="down">-218</td>
+                <td>46</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 901 (Div. 1)</td>
+                <td>2023-10-01</td>
+                <td style="color: #FF0000">3751</td>
+                <td style="color: #FF0000">3775</td>
+                <td class="up">+24</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 6 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2023-09-19</td>
+                <td style="color: #FF0000">3817</td>
+                <td style="color: #FF0000">3751</td>
+                <td class="down">-66</td>
+                <td>6</td>
+                <td>7</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Pinely Round 2 (Div. 1 + Div. 2)</td>
+                <td>2023-08-31</td>
+                <td style="color: #FF0000">3727</td>
+                <td style="color: #FF0000">3817</td>
+                <td class="up">+90</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 889 (Div. 1)</td>
+                <td>2023-07-30</td>
+                <td style="color: #FF0000">3726</td>
+                <td style="color: #FF0000">3727</td>
+                <td class="up">+1</td>
+                <td>3</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 887 (Div. 1)</td>
+                <td>2023-07-24</td>
+                <td style="color: #FF0000">3767</td>
+                <td style="color: #FF0000">3726</td>
+                <td class="down">-41</td>
+                <td>4</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 884 (Div. 1 + Div. 2)</td>
+                <td>2023-07-12</td>
+                <td style="color: #FF0000">3755</td>
+                <td style="color: #FF0000">3767</td>
+                <td class="up">+12</td>
+                <td>2</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2023-06-25</td>
+                <td style="color: #FF0000">3664</td>
+                <td style="color: #FF0000">3755</td>
+                <td class="up">+91</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 880 (Div. 1)</td>
+                <td>2023-06-19</td>
+                <td style="color: #FF0000">3611</td>
+                <td style="color: #FF0000">3664</td>
+                <td class="up">+53</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 875 (Div. 1)</td>
+                <td>2023-05-29</td>
+                <td style="color: #FF0000">3622</td>
+                <td style="color: #FF0000">3611</td>
+                <td class="down">-11</td>
+                <td>4</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 873 (Div. 1)</td>
+                <td>2023-05-15</td>
+                <td style="color: #FF0000">3662</td>
+                <td style="color: #FF0000">3622</td>
+                <td class="down">-40</td>
+                <td>6</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 869 (Div. 1)</td>
+                <td>2023-04-30</td>
+                <td style="color: #FF0000">3588</td>
+                <td style="color: #FF0000">3662</td>
+                <td class="up">+74</td>
+                <td>2</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 866 (Div. 1)</td>
+                <td>2023-04-15</td>
+                <td style="color: #FF0000">3635</td>
+                <td style="color: #FF0000">3588</td>
+                <td class="down">-47</td>
+                <td>5</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 865 (Div. 1)</td>
+                <td>2023-04-10</td>
+                <td style="color: #FF0000">3486</td>
+                <td style="color: #FF0000">3635</td>
+                <td class="up">+149</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2023-04-01</td>
+                <td style="color: #FF0000">3706</td>
+                <td style="color: #FF0000">3486</td>
+                <td class="down">-220</td>
+                <td>73</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Nebius Welcome Round (Div. 1 + Div. 2)</td>
+                <td>2023-03-13</td>
+                <td style="color: #FF0000">3658</td>
+                <td style="color: #FF0000">3706</td>
+                <td class="up">+48</td>
+                <td>2</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 857 (Div. 1)</td>
+                <td>2023-03-09</td>
+                <td style="color: #FF0000">3803</td>
+                <td style="color: #FF0000">3658</td>
+                <td class="down">-145</td>
+                <td>17</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>TypeDB Forces 2023 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2023-01-30</td>
+                <td style="color: #FF0000">3768</td>
+                <td style="color: #FF0000">3803</td>
+                <td class="up">+35</td>
+                <td>2</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Hello 2023</td>
+                <td>2023-01-04</td>
+                <td style="color: #FF0000">3731</td>
+                <td style="color: #FF0000">3768</td>
+                <td class="up">+37</td>
+                <td>2</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2022: 2023 is NEAR</td>
+                <td>2022-12-31</td>
+                <td style="color: #FF0000">3764</td>
+                <td style="color: #FF0000">3731</td>
+                <td class="down">-33</td>
+                <td>5</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Polynomial Round 2022 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2022-12-18</td>
+                <td style="color: #FF0000">3817</td>
+                <td style="color: #FF0000">3764</td>
+                <td class="down">-53</td>
+                <td>3</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Pinely Round 1 (Div. 1 + Div. 2)</td>
+                <td>2022-11-21</td>
+                <td style="color: #FF0000">3735</td>
+                <td style="color: #FF0000">3817</td>
+                <td class="up">+82</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 3 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2022-11-07</td>
+                <td style="color: #FF0000">3912</td>
+                <td style="color: #FF0000">3735</td>
+                <td class="down">-177</td>
+                <td>10</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 23</td>
+                <td>2022-10-16</td>
+                <td style="color: #FF0000">3834</td>
+                <td style="color: #FF0000">3912</td>
+                <td class="up">+78</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Dytechlab Cup 2022</td>
+                <td>2022-10-08</td>
+                <td style="color: #FF0000">3757</td>
+                <td style="color: #FF0000">3834</td>
+                <td class="up">+77</td>
+                <td>1</td>
+                <td>7</td>
+                <td>8</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 22</td>
+                <td>2022-10-01</td>
+                <td style="color: #FF0000">3851</td>
+                <td style="color: #FF0000">3757</td>
+                <td class="down">-94</td>
+                <td>6</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 814 (Div. 1)</td>
+                <td>2022-08-17</td>
+                <td style="color: #FF0000">3771</td>
+                <td style="color: #FF0000">3851</td>
+                <td class="up">+80</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 2 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2022-08-01</td>
+                <td style="color: #FF0000">3678</td>
+                <td style="color: #FF0000">3771</td>
+                <td class="up">+93</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 808 (Div. 1)</td>
+                <td>2022-07-17</td>
+                <td style="color: #FF0000">3671</td>
+                <td style="color: #FF0000">3678</td>
+                <td class="up">+7</td>
+                <td>3</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 21</td>
+                <td>2022-06-26</td>
+                <td style="color: #FF0000">3727</td>
+                <td style="color: #FF0000">3671</td>
+                <td class="down">-56</td>
+                <td>7</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 800 (Div. 1)</td>
+                <td>2022-06-17</td>
+                <td style="color: #FF0000">3732</td>
+                <td style="color: #FF0000">3727</td>
+                <td class="down">-5</td>
+                <td>3</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 796 (Div. 1)</td>
+                <td>2022-06-04</td>
+                <td style="color: #FF0000">3764</td>
+                <td style="color: #FF0000">3732</td>
+                <td class="down">-32</td>
+                <td>4</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 794 (Div. 1)</td>
+                <td>2022-05-26</td>
+                <td style="color: #FF0000">3882</td>
+                <td style="color: #FF0000">3764</td>
+                <td class="down">-118</td>
+                <td>6</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 792 (Div. 1 + Div. 2)</td>
+                <td>2022-05-20</td>
+                <td style="color: #FF0000">3805</td>
+                <td style="color: #FF0000">3882</td>
+                <td class="up">+77</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 789 (Div. 1)</td>
+                <td>2022-05-09</td>
+                <td style="color: #FF0000">3814</td>
+                <td style="color: #FF0000">3805</td>
+                <td class="down">-9</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 20</td>
+                <td>2022-04-24</td>
+                <td style="color: #FF0000">3801</td>
+                <td style="color: #FF0000">3814</td>
+                <td class="up">+13</td>
+                <td>2</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 783 (Div. 1)</td>
+                <td>2022-04-20</td>
+                <td style="color: #FF0000">3796</td>
+                <td style="color: #FF0000">3801</td>
+                <td class="up">+5</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CodeTON Round 1 (Div. 1 + Div. 2, Rated, Prizes!)</td>
+                <td>2022-03-25</td>
+                <td style="color: #FF0000">3946</td>
+                <td style="color: #FF0000">3796</td>
+                <td class="down">-150</td>
+                <td>8</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 773 (Div. 1)</td>
+                <td>2022-02-23</td>
+                <td style="color: #FF0000">3879</td>
+                <td style="color: #FF0000">3946</td>
+                <td class="up">+67</td>
+                <td>1</td>
+                <td>6</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 19</td>
+                <td>2022-02-13</td>
+                <td style="color: #FF0000">3809</td>
+                <td style="color: #FF0000">3879</td>
+                <td class="up">+70</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 768 (Div. 1)</td>
+                <td>2022-01-28</td>
+                <td style="color: #FF0000">3979</td>
+                <td style="color: #FF0000">3809</td>
+                <td class="down">-170</td>
+                <td>9</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 767 (Div. 1)</td>
+                <td>2022-01-23</td>
+                <td style="color: #FF0000">3911</td>
+                <td style="color: #FF0000">3979</td>
+                <td class="up">+68</td>
+                <td>1</td>
+                <td>6</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Hello 2022</td>
+                <td>2022-01-04</td>
+                <td style="color: #FF0000">3836</td>
+                <td style="color: #FF0000">3911</td>
+                <td class="up">+75</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2021: 2022 is NEAR</td>
+                <td>2021-12-30</td>
+                <td style="color: #FF0000">3756</td>
+                <td style="color: #FF0000">3836</td>
+                <td class="up">+80</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 18</td>
+                <td>2021-12-25</td>
+                <td style="color: #FF0000">3870</td>
+                <td style="color: #FF0000">3756</td>
+                <td class="down">-114</td>
+                <td>8</td>
+                <td>7</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Deltix Round, Autumn 2021 (open for everyone, rated, Div. 1 + Div. 2)</td>
+                <td>2021-11-29</td>
+                <td style="color: #FF0000">3797</td>
+                <td style="color: #FF0000">3870</td>
+                <td class="up">+73</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 17</td>
+                <td>2021-11-24</td>
+                <td style="color: #FF0000">3804</td>
+                <td style="color: #FF0000">3797</td>
+                <td class="down">-7</td>
+                <td>2</td>
+                <td>8</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 752 (Div. 1)</td>
+                <td>2021-10-31</td>
+                <td style="color: #FF0000">3707</td>
+                <td style="color: #FF0000">3804</td>
+                <td class="up">+97</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 16</td>
+                <td>2021-09-13</td>
+                <td style="color: #FF0000">3656</td>
+                <td style="color: #FF0000">3707</td>
+                <td class="up">+51</td>
+                <td>2</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Deltix Round, Summer 2021 (open for everyone, rated, Div. 1 + Div. 2)</td>
+                <td>2021-08-30</td>
+                <td style="color: #FF0000">3819</td>
+                <td style="color: #FF0000">3656</td>
+                <td class="down">-163</td>
+                <td>22</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 736 (Div. 1)</td>
+                <td>2021-08-02</td>
+                <td style="color: #FF0000">3822</td>
+                <td style="color: #FF0000">3819</td>
+                <td class="down">-3</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 15</td>
+                <td>2021-07-26</td>
+                <td style="color: #FF0000">3729</td>
+                <td style="color: #FF0000">3822</td>
+                <td class="up">+93</td>
+                <td>1</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Harbour.Space Scholarship Contest 2021-2022 (open for everyone, rated, Div. 1 + Div. 2)</td>
+                <td>2021-07-23</td>
+                <td style="color: #FF0000">3748</td>
+                <td style="color: #FF0000">3729</td>
+                <td class="down">-19</td>
+                <td>3</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 728 (Div. 1)</td>
+                <td>2021-06-26</td>
+                <td style="color: #FF0000">3723</td>
+                <td style="color: #FF0000">3748</td>
+                <td class="up">+25</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces LATOKEN Round 1 (Div. 1 + Div. 2)</td>
+                <td>2021-06-14</td>
+                <td style="color: #FF0000">3669</td>
+                <td style="color: #FF0000">3723</td>
+                <td class="up">+54</td>
+                <td>2</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Deltix Round, Spring 2021 (open for everyone, rated, Div. 1 + Div. 2)</td>
+                <td>2021-05-31</td>
+                <td style="color: #FF0000">3538</td>
+                <td style="color: #FF0000">3669</td>
+                <td class="up">+131</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 722 (Div. 1)</td>
+                <td>2021-05-25</td>
+                <td style="color: #FF0000">3579</td>
+                <td style="color: #FF0000">3538</td>
+                <td class="down">-41</td>
+                <td>8</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 14</td>
+                <td>2021-05-03</td>
+                <td style="color: #FF0000">3617</td>
+                <td style="color: #FF0000">3579</td>
+                <td class="down">-38</td>
+                <td>6</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Contest 2050 and Codeforces Round 718 (Div. 1 + Div. 2)</td>
+                <td>2021-04-24</td>
+                <td style="color: #FF0000">3682</td>
+                <td style="color: #FF0000">3617</td>
+                <td class="down">-65</td>
+                <td>8</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 715 (Div. 1)</td>
+                <td>2021-04-17</td>
+                <td style="color: #FF0000">3697</td>
+                <td style="color: #FF0000">3682</td>
+                <td class="down">-15</td>
+                <td>3</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 712 (Div. 1)</td>
+                <td>2021-04-04</td>
+                <td style="color: #FF0000">3668</td>
+                <td style="color: #FF0000">3697</td>
+                <td class="up">+29</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 707 (Div. 1, based on Moscow Open Olympiad in Informatics)</td>
+                <td>2021-03-13</td>
+                <td style="color: #FF0000">3572</td>
+                <td style="color: #FF0000">3668</td>
+                <td class="up">+96</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 706 (Div. 1)</td>
+                <td>2021-03-10</td>
+                <td style="color: #FF0000">3565</td>
+                <td style="color: #FF0000">3572</td>
+                <td class="up">+7</td>
+                <td>3</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 13</td>
+                <td>2021-03-01</td>
+                <td style="color: #FF0000">3748</td>
+                <td style="color: #FF0000">3565</td>
+                <td class="down">-183</td>
+                <td>35</td>
+                <td>6</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 698 (Div. 1)</td>
+                <td>2021-01-29</td>
+                <td style="color: #FF0000">3778</td>
+                <td style="color: #FF0000">3748</td>
+                <td class="down">-30</td>
+                <td>3</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 694 (Div. 1)</td>
+                <td>2021-01-06</td>
+                <td style="color: #FF0000">3702</td>
+                <td style="color: #FF0000">3778</td>
+                <td class="up">+76</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2020</td>
+                <td>2020-12-31</td>
+                <td style="color: #FF0000">3601</td>
+                <td style="color: #FF0000">3702</td>
+                <td class="up">+101</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 692 (Div. 1, based on Technocup 2021 Elimination Round 3)</td>
+                <td>2020-12-21</td>
+                <td style="color: #FF0000">3783</td>
+                <td style="color: #FF0000">3601</td>
+                <td class="down">-182</td>
+                <td>20</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 691 (Div. 1)</td>
+                <td>2020-12-19</td>
+                <td style="color: #FF0000">3712</td>
+                <td style="color: #FF0000">3783</td>
+                <td class="up">+71</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 12</td>
+                <td>2020-12-07</td>
+                <td style="color: #FF0000">3687</td>
+                <td style="color: #FF0000">3712</td>
+                <td class="up">+25</td>
+                <td>2</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2019-2020 - Final Round (Engine)</td>
+                <td>2020-11-02</td>
+                <td style="color: #FF0000">3619</td>
+                <td style="color: #FF0000">3687</td>
+                <td class="up">+68</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 679 (Div. 1, based on Technocup 2021 Elimination Round 1)</td>
+                <td>2020-10-25</td>
+                <td style="color: #FF0000">3509</td>
+                <td style="color: #FF0000">3619</td>
+                <td class="up">+110</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 11</td>
+                <td>2020-10-11</td>
+                <td style="color: #FF0000">3629</td>
+                <td style="color: #FF0000">3509</td>
+                <td class="down">-120</td>
+                <td>22</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Grakn Forces 2020</td>
+                <td>2020-10-01</td>
+                <td style="color: #FF0000">3533</td>
+                <td style="color: #FF0000">3629</td>
+                <td class="up">+96</td>
+                <td>1</td>
+                <td>9</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 673 (Div. 1)</td>
+                <td>2020-09-28</td>
+                <td style="color: #FF0000">3438</td>
+                <td style="color: #FF0000">3533</td>
+                <td class="up">+95</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 668 (Div. 1)</td>
+                <td>2020-09-07</td>
+                <td style="color: #FF0000">3613</td>
+                <td style="color: #FF0000">3438</td>
+                <td class="down">-175</td>
+                <td>36</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 666 (Div. 1)</td>
+                <td>2020-08-31</td>
+                <td style="color: #FF0000">3506</td>
+                <td style="color: #FF0000">3613</td>
+                <td class="up">+107</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 10</td>
+                <td>2020-08-17</td>
+                <td style="color: #FF0000">3515</td>
+                <td style="color: #FF0000">3506</td>
+                <td class="down">-9</td>
+                <td>4</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 664 (Div. 1)</td>
+                <td>2020-08-13</td>
+                <td style="color: #FF0000">3735</td>
+                <td style="color: #FF0000">3515</td>
+                <td class="down">-220</td>
+                <td>41</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 659 (Div. 1)</td>
+                <td>2020-07-25</td>
+                <td style="color: #FF0000">3669</td>
+                <td style="color: #FF0000">3735</td>
+                <td class="up">+66</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 9</td>
+                <td>2020-07-05</td>
+                <td style="color: #FF0000">3567</td>
+                <td style="color: #FF0000">3669</td>
+                <td class="up">+102</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 8</td>
+                <td>2020-06-19</td>
+                <td style="color: #FF0000">3520</td>
+                <td style="color: #FF0000">3567</td>
+                <td class="up">+47</td>
+                <td>2</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 647 (Div. 1) - Thanks, Algo Muse!</td>
+                <td>2020-06-05</td>
+                <td style="color: #FF0000">3409</td>
+                <td style="color: #FF0000">3520</td>
+                <td class="up">+111</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 641 (Div. 1)</td>
+                <td>2020-05-12</td>
+                <td style="color: #FF0000">3541</td>
+                <td style="color: #FF0000">3409</td>
+                <td class="down">-132</td>
+                <td>26</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 635 (Div. 1)</td>
+                <td>2020-04-16</td>
+                <td style="color: #FF0000">3733</td>
+                <td style="color: #FF0000">3541</td>
+                <td class="down">-192</td>
+                <td>29</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 633 (Div. 1)</td>
+                <td>2020-04-13</td>
+                <td style="color: #FF0000">3673</td>
+                <td style="color: #FF0000">3733</td>
+                <td class="up">+60</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 631 (Div. 1) - Thanks, Denis aramis Shitov!</td>
+                <td>2020-04-04</td>
+                <td style="color: #FF0000">3669</td>
+                <td style="color: #FF0000">3673</td>
+                <td class="up">+4</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 7</td>
+                <td>2020-03-20</td>
+                <td style="color: #FF0000">3585</td>
+                <td style="color: #FF0000">3669</td>
+                <td class="up">+84</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Ozon Tech Challenge 2020 (Div.1 + Div.2, Rated, T-shirts + prizes!)</td>
+                <td>2020-03-04</td>
+                <td style="color: #FF0000">3496</td>
+                <td style="color: #FF0000">3585</td>
+                <td class="up">+89</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2019-2020 - Elimination Round (Engine)</td>
+                <td>2020-02-24</td>
+                <td style="color: #FF0000">3404</td>
+                <td style="color: #FF0000">3496</td>
+                <td class="up">+92</td>
+                <td>1</td>
+                <td>5</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 621 (Div. 1 + Div. 2)</td>
+                <td>2020-02-18</td>
+                <td style="color: #FF0000">3549</td>
+                <td style="color: #FF0000">3404</td>
+                <td class="down">-145</td>
+                <td>26</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 616 (Div. 1)</td>
+                <td>2020-02-03</td>
+                <td style="color: #FF0000">3461</td>
+                <td style="color: #FF0000">3549</td>
+                <td class="up">+88</td>
+                <td>1</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 614 (Div. 1)</td>
+                <td>2020-01-19</td>
+                <td style="color: #FF0000">3430</td>
+                <td style="color: #FF0000">3461</td>
+                <td class="up">+31</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Hello 2020</td>
+                <td>2020-01-04</td>
+                <td style="color: #FF0000">3418</td>
+                <td style="color: #FF0000">3430</td>
+                <td class="up">+12</td>
+                <td>4</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2019</td>
+                <td>2019-12-30</td>
+                <td style="color: #FF0000">3615</td>
+                <td style="color: #FF0000">3418</td>
+                <td class="down">-197</td>
+                <td>50</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 609 (Div. 1)</td>
+                <td>2019-12-21</td>
+                <td style="color: #FF0000">3539</td>
+                <td style="color: #FF0000">3615</td>
+                <td class="up">+76</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 6</td>
+                <td>2019-12-18</td>
+                <td style="color: #FF0000">3556</td>
+                <td style="color: #FF0000">3539</td>
+                <td class="down">-17</td>
+                <td>3</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 604 (Div. 1)</td>
+                <td>2019-12-06</td>
+                <td style="color: #FF0000">3544</td>
+                <td style="color: #FF0000">3556</td>
+                <td class="up">+12</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 602 (Div. 1, based on Technocup 2020 Elimination Round 3)</td>
+                <td>2019-11-24</td>
+                <td style="color: #FF0000">3532</td>
+                <td style="color: #FF0000">3544</td>
+                <td class="up">+12</td>
+                <td>2</td>
+                <td>8</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 596 (Div. 1, based on Technocup 2020 Elimination Round 2)</td>
+                <td>2019-10-26</td>
+                <td style="color: #FF0000">3557</td>
+                <td style="color: #FF0000">3532</td>
+                <td class="down">-25</td>
+                <td>3</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 584 - Dasha Code Championship - Elimination Round (rated, open for everyone, Div. 1 + Div. 2)</td>
+                <td>2019-09-14</td>
+                <td style="color: #FF0000">3711</td>
+                <td style="color: #FF0000">3557</td>
+                <td class="down">-154</td>
+                <td>11</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Manthan, Codefest 19 (open for everyone, rated, Div. 1 + Div. 2)</td>
+                <td>2019-08-26</td>
+                <td style="color: #FF0000">3645</td>
+                <td style="color: #FF0000">3711</td>
+                <td class="up">+66</td>
+                <td>1</td>
+                <td>8</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 576 (Div. 1)</td>
+                <td>2019-07-31</td>
+                <td style="color: #FF0000">3686</td>
+                <td style="color: #FF0000">3645</td>
+                <td class="down">-41</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 3</td>
+                <td>2019-06-02</td>
+                <td style="color: #FF0000">3698</td>
+                <td style="color: #FF0000">3686</td>
+                <td class="down">-12</td>
+                <td>2</td>
+                <td>7</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Forethought Future Cup - Elimination Round</td>
+                <td>2019-04-21</td>
+                <td style="color: #FF0000">3628</td>
+                <td style="color: #FF0000">3698</td>
+                <td class="up">+70</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 2</td>
+                <td>2019-04-06</td>
+                <td style="color: #FF0000">3624</td>
+                <td style="color: #FF0000">3628</td>
+                <td class="up">+4</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Global Round 1</td>
+                <td>2019-02-07</td>
+                <td style="color: #FF0000">3539</td>
+                <td style="color: #FF0000">3624</td>
+                <td class="up">+85</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Hello 2019</td>
+                <td>2019-01-05</td>
+                <td style="color: #FF0000">3559</td>
+                <td style="color: #FF0000">3539</td>
+                <td class="down">-20</td>
+                <td>3</td>
+                <td>7</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2018</td>
+                <td>2018-12-31</td>
+                <td style="color: #FF0000">3469</td>
+                <td style="color: #FF0000">3559</td>
+                <td class="up">+90</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Avito Cool Challenge 2018</td>
+                <td>2018-12-17</td>
+                <td style="color: #FF0000">3372</td>
+                <td style="color: #FF0000">3469</td>
+                <td class="up">+97</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Mail.Ru Cup 2018 Round 2</td>
+                <td>2018-11-11</td>
+                <td style="color: #FF0000">3401</td>
+                <td style="color: #FF0000">3372</td>
+                <td class="down">-29</td>
+                <td>5</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Lyft Level 5 Challenge 2018 - Final Round</td>
+                <td>2018-11-05</td>
+                <td style="color: #FF0000">3312</td>
+                <td style="color: #FF0000">3401</td>
+                <td class="up">+89</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 519 by Botan Investments</td>
+                <td>2018-10-29</td>
+                <td style="color: #FF0000">3581</td>
+                <td style="color: #FF0000">3312</td>
+                <td class="down">-269</td>
+                <td>126</td>
+                <td>5</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>Lyft Level 5 Challenge 2018 - Elimination Round</td>
+                <td>2018-10-08</td>
+                <td style="color: #FF0000">3509</td>
+                <td style="color: #FF0000">3581</td>
+                <td class="up">+72</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Manthan, Codefest 18 (rated, Div. 1 + Div. 2)</td>
+                <td>2018-09-03</td>
+                <td style="color: #FF0000">3434</td>
+                <td style="color: #FF0000">3509</td>
+                <td class="up">+75</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 485 (Div. 1)</td>
+                <td>2018-05-30</td>
+                <td style="color: #FF0000">3341</td>
+                <td style="color: #FF0000">3434</td>
+                <td class="up">+93</td>
+                <td>1</td>
+                <td>6</td>
+                <td>17</td>
+            </tr>
+            <tr>
+                <td>Avito Code Challenge 2018</td>
+                <td>2018-05-28</td>
+                <td style="color: #FF0000">3235</td>
+                <td style="color: #FF0000">3341</td>
+                <td class="up">+106</td>
+                <td>1</td>
+                <td>8</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 477 (rated, Div. 1, based on VK Cup 2018 Round 3)</td>
+                <td>2018-04-29</td>
+                <td style="color: #FF0000">3206</td>
+                <td style="color: #FF0000">3235</td>
+                <td class="up">+29</td>
+                <td>3</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 470 (rated, Div. 1, based on VK Cup 2018 Round 1)</td>
+                <td>2018-03-11</td>
+                <td style="color: #FF0000">3496</td>
+                <td style="color: #FF0000">3206</td>
+                <td class="down">-290</td>
+                <td>140</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>MemSQL Start[c]UP 3.0 - Round 2 and Codeforces Round 437 (Div. 1)</td>
+                <td>2017-10-01</td>
+                <td style="color: #FF0000">3411</td>
+                <td style="color: #FF0000">3496</td>
+                <td class="up">+85</td>
+                <td>1</td>
+                <td>5</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>Manthan, Codefest 17</td>
+                <td>2017-09-25</td>
+                <td style="color: #FF0000">3438</td>
+                <td style="color: #FF0000">3411</td>
+                <td class="down">-27</td>
+                <td>3</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>MemSQL Start[c]UP 3.0 - Round 1</td>
+                <td>2017-09-17</td>
+                <td style="color: #FF0000">3488</td>
+                <td style="color: #FF0000">3438</td>
+                <td class="down">-50</td>
+                <td>4</td>
+                <td>7</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>AIM Tech Round 4 (Div. 1)</td>
+                <td>2017-08-25</td>
+                <td style="color: #FF0000">3602</td>
+                <td style="color: #FF0000">3488</td>
+                <td class="down">-114</td>
+                <td>7</td>
+                <td>3</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Playrix Codescapes Cup (Codeforces Round 413, rated, Div. 1 + Div. 2)</td>
+                <td>2017-05-12</td>
+                <td style="color: #FF0000">3534</td>
+                <td style="color: #FF0000">3602</td>
+                <td class="up">+68</td>
+                <td>1</td>
+                <td>6</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>ICM Technex 2017 and Codeforces Round 400 (Div. 1 + Div. 2, combined)</td>
+                <td>2017-02-24</td>
+                <td style="color: #FF0000">3544</td>
+                <td style="color: #FF0000">3534</td>
+                <td class="down">-10</td>
+                <td>2</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>8VC Venture Cup 2017 - Final Round</td>
+                <td>2017-01-23</td>
+                <td style="color: #FF0000">3739</td>
+                <td style="color: #FF0000">3544</td>
+                <td class="down">-195</td>
+                <td>7</td>
+                <td>4</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>8VC Venture Cup 2017 - Elimination Round</td>
+                <td>2017-01-16</td>
+                <td style="color: #FF0000">3670</td>
+                <td style="color: #FF0000">3739</td>
+                <td class="up">+69</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codecraft-17 and Codeforces Round 391 (Div. 1 + Div. 2, combined)</td>
+                <td>2017-01-13</td>
+                <td style="color: #FF0000">3615</td>
+                <td style="color: #FF0000">3670</td>
+                <td class="up">+55</td>
+                <td>1</td>
+                <td>6</td>
+                <td>11</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2016</td>
+                <td>2016-12-31</td>
+                <td style="color: #FF0000">3638</td>
+                <td style="color: #FF0000">3615</td>
+                <td class="down">-23</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 385 (Div. 1)</td>
+                <td>2016-12-18</td>
+                <td style="color: #FF0000">3580</td>
+                <td style="color: #FF0000">3638</td>
+                <td class="up">+58</td>
+                <td>1</td>
+                <td>4</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2016 - Finals</td>
+                <td>2016-07-03</td>
+                <td style="color: #FF0000">3525</td>
+                <td style="color: #FF0000">3580</td>
+                <td class="up">+55</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 360 (Div. 1)</td>
+                <td>2016-06-30</td>
+                <td style="color: #FF0000">3554</td>
+                <td style="color: #FF0000">3525</td>
+                <td class="down">-29</td>
+                <td>2</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2016 - Round 3</td>
+                <td>2016-05-08</td>
+                <td style="color: #FF0000">3501</td>
+                <td style="color: #FF0000">3554</td>
+                <td class="up">+53</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2016 - Round 2</td>
+                <td>2016-04-25</td>
+                <td style="color: #FF0000">3640</td>
+                <td style="color: #FF0000">3501</td>
+                <td class="down">-139</td>
+                <td>4</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CROC 2016 - Final Round [Private, For Onsite Finalists Only]</td>
+                <td>2016-04-16</td>
+                <td style="color: #FF0000">3588</td>
+                <td style="color: #FF0000">3640</td>
+                <td class="up">+52</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2016 - Round 1</td>
+                <td>2016-03-29</td>
+                <td style="color: #FF0000">3534</td>
+                <td style="color: #FF0000">3588</td>
+                <td class="up">+54</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>CROC 2016 - Elimination Round</td>
+                <td>2016-03-19</td>
+                <td style="color: #FF0000">3582</td>
+                <td style="color: #FF0000">3534</td>
+                <td class="down">-48</td>
+                <td>2</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 345 (Div. 1)</td>
+                <td>2016-03-07</td>
+                <td style="color: #FF0000">3518</td>
+                <td style="color: #FF0000">3582</td>
+                <td class="up">+64</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>8VC Venture Cup 2016 - Final Round</td>
+                <td>2016-02-29</td>
+                <td style="color: #FF0000">3444</td>
+                <td style="color: #FF0000">3518</td>
+                <td class="up">+74</td>
+                <td>1</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Manthan, Codefest 16</td>
+                <td>2016-02-27</td>
+                <td style="color: #FF0000">3373</td>
+                <td style="color: #FF0000">3444</td>
+                <td class="up">+71</td>
+                <td>1</td>
+                <td>8</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>8VC Venture Cup 2016 - Elimination Round</td>
+                <td>2016-02-14</td>
+                <td style="color: #FF0000">3444</td>
+                <td style="color: #FF0000">3373</td>
+                <td class="down">-71</td>
+                <td>6</td>
+                <td>6</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2015</td>
+                <td>2015-12-31</td>
+                <td style="color: #FF0000">3374</td>
+                <td style="color: #FF0000">3444</td>
+                <td class="up">+70</td>
+                <td>1</td>
+                <td>7</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 336 (Div. 1)</td>
+                <td>2015-12-24</td>
+                <td style="color: #FF0000">3374</td>
+                <td style="color: #FF0000">3374</td>
+                <td class="up">+0</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 318 [RussianCodeCup Thanks-Round] (Div. 1)</td>
+                <td>2015-08-30</td>
+                <td style="color: #FF0000">3503</td>
+                <td style="color: #FF0000">3374</td>
+                <td class="down">-129</td>
+                <td>166</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2015 - Finals</td>
+                <td>2015-07-26</td>
+                <td style="color: #FF0000">3445</td>
+                <td style="color: #FF0000">3503</td>
+                <td class="up">+58</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Looksery Cup 2015</td>
+                <td>2015-06-06</td>
+                <td style="color: #FF0000">3407</td>
+                <td style="color: #FF0000">3445</td>
+                <td class="up">+38</td>
+                <td>1</td>
+                <td>7</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2015 - Раунд 3</td>
+                <td>2015-05-04</td>
+                <td style="color: #FF0000">3341</td>
+                <td style="color: #FF0000">3407</td>
+                <td class="up">+66</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2015 - Round 2</td>
+                <td>2015-04-18</td>
+                <td style="color: #FF0000">3274</td>
+                <td style="color: #FF0000">3341</td>
+                <td class="up">+67</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>ZeptoLab Code Rush 2015</td>
+                <td>2015-04-05</td>
+                <td style="color: #FF0000">3223</td>
+                <td style="color: #FF0000">3274</td>
+                <td class="up">+51</td>
+                <td>1</td>
+                <td>6</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2015 - Round 1</td>
+                <td>2015-03-22</td>
+                <td style="color: #FF0000">3239</td>
+                <td style="color: #FF0000">3223</td>
+                <td class="down">-16</td>
+                <td>4</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Rockethon 2015</td>
+                <td>2015-02-08</td>
+                <td style="color: #FF0000">3201</td>
+                <td style="color: #FF0000">3239</td>
+                <td class="up">+38</td>
+                <td>1</td>
+                <td>18</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 290 (Div. 1)</td>
+                <td>2015-02-03</td>
+                <td style="color: #FF0000">3254</td>
+                <td style="color: #FF0000">3201</td>
+                <td class="down">-53</td>
+                <td>5</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2014</td>
+                <td>2014-12-31</td>
+                <td style="color: #FF0000">3240</td>
+                <td style="color: #FF0000">3254</td>
+                <td class="up">+14</td>
+                <td>1</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 282 (Div. 1)</td>
+                <td>2014-12-14</td>
+                <td style="color: #FF0000">3203</td>
+                <td style="color: #FF0000">3240</td>
+                <td class="up">+37</td>
+                <td>1</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 275 (Div. 1)</td>
+                <td>2014-10-25</td>
+                <td style="color: #FF0000">3164</td>
+                <td style="color: #FF0000">3203</td>
+                <td class="up">+39</td>
+                <td>1</td>
+                <td>4</td>
+                <td>9</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 270</td>
+                <td>2014-09-29</td>
+                <td style="color: #FF0000">3299</td>
+                <td style="color: #FF0000">3164</td>
+                <td class="down">-135</td>
+                <td>21</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 265 (Div. 1)</td>
+                <td>2014-09-08</td>
+                <td style="color: #FF0000">3260</td>
+                <td style="color: #FF0000">3299</td>
+                <td class="up">+39</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>MemSQL Start[c]UP 2.0 - Round 2 - Online Round</td>
+                <td>2014-08-11</td>
+                <td style="color: #FF0000">3213</td>
+                <td style="color: #FF0000">3260</td>
+                <td class="up">+47</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 260 (Div. 1)</td>
+                <td>2014-08-09</td>
+                <td style="color: #FF0000">3173</td>
+                <td style="color: #FF0000">3213</td>
+                <td class="up">+40</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>MemSQL Start[c]UP 2.0 - Round 1</td>
+                <td>2014-07-28</td>
+                <td style="color: #FF0000">3245</td>
+                <td style="color: #FF0000">3173</td>
+                <td class="down">-72</td>
+                <td>8</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 253 (Div. 1)</td>
+                <td>2014-06-20</td>
+                <td style="color: #FF0000">3206</td>
+                <td style="color: #FF0000">3245</td>
+                <td class="up">+39</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Zepto Code Rush 2014</td>
+                <td>2014-06-14</td>
+                <td style="color: #FF0000">3228</td>
+                <td style="color: #FF0000">3206</td>
+                <td class="down">-22</td>
+                <td>3</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>RCC 2014 Warmup (Div. 1)</td>
+                <td>2014-04-18</td>
+                <td style="color: #FF0000">3186</td>
+                <td style="color: #FF0000">3228</td>
+                <td class="up">+42</td>
+                <td>1</td>
+                <td>3</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 239 (Div. 1)</td>
+                <td>2014-03-30</td>
+                <td style="color: #FF0000">3141</td>
+                <td style="color: #FF0000">3186</td>
+                <td class="up">+45</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 228 (Div. 1)</td>
+                <td>2014-02-04</td>
+                <td style="color: #FF0000">3093</td>
+                <td style="color: #FF0000">3141</td>
+                <td class="up">+48</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Good Bye 2013</td>
+                <td>2013-12-31</td>
+                <td style="color: #FF0000">3209</td>
+                <td style="color: #FF0000">3093</td>
+                <td class="down">-116</td>
+                <td>19</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 222 (Div. 1)</td>
+                <td>2013-12-30</td>
+                <td style="color: #FF0000">3209</td>
+                <td style="color: #FF0000">3209</td>
+                <td class="up">+0</td>
+                <td>2</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 219 (Div. 1)</td>
+                <td>2013-12-14</td>
+                <td style="color: #FF0000">3205</td>
+                <td style="color: #FF0000">3209</td>
+                <td class="up">+4</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 215 (Div. 1)</td>
+                <td>2013-11-27</td>
+                <td style="color: #FF0000">3250</td>
+                <td style="color: #FF0000">3205</td>
+                <td class="down">-45</td>
+                <td>4</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 207 (Div. 1)</td>
+                <td>2013-10-15</td>
+                <td style="color: #FF0000">3210</td>
+                <td style="color: #FF0000">3250</td>
+                <td class="up">+40</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 200 (Div. 1)</td>
+                <td>2013-09-15</td>
+                <td style="color: #FF0000">3165</td>
+                <td style="color: #FF0000">3210</td>
+                <td class="up">+45</td>
+                <td>1</td>
+                <td>5</td>
+                <td>32</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 196 (Div. 1)</td>
+                <td>2013-08-17</td>
+                <td style="color: #FF0000">3121</td>
+                <td style="color: #FF0000">3165</td>
+                <td class="up">+44</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>MemSQL start[c]up Round 2 - online version</td>
+                <td>2013-08-04</td>
+                <td style="color: #FF0000">3072</td>
+                <td style="color: #FF0000">3121</td>
+                <td class="up">+49</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 192 (Div. 1)</td>
+                <td>2013-07-20</td>
+                <td style="color: #FF0000">3136</td>
+                <td style="color: #FF0000">3072</td>
+                <td class="down">-64</td>
+                <td>9</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>ABBYY Cup 3.0 - Finals (online version)</td>
+                <td>2013-07-18</td>
+                <td style="color: #FF0000">3088</td>
+                <td style="color: #FF0000">3136</td>
+                <td class="up">+48</td>
+                <td>1</td>
+                <td>11</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 188 (Div. 1)</td>
+                <td>2013-06-15</td>
+                <td style="color: #FF0000">3195</td>
+                <td style="color: #FF0000">3088</td>
+                <td class="down">-107</td>
+                <td>24</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>ABBYY Cup 3.0</td>
+                <td>2013-06-13</td>
+                <td style="color: #FF0000">3188</td>
+                <td style="color: #FF0000">3195</td>
+                <td class="up">+7</td>
+                <td>2</td>
+                <td>18</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Croc Champ 2013 - Finals</td>
+                <td>2013-05-17</td>
+                <td style="color: #FF0000">3157</td>
+                <td style="color: #FF0000">3188</td>
+                <td class="up">+31</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Croc Champ 2013 - Round 2</td>
+                <td>2013-04-23</td>
+                <td style="color: #FF0000">3103</td>
+                <td style="color: #FF0000">3157</td>
+                <td class="up">+54</td>
+                <td>1</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 180 (Div. 1)</td>
+                <td>2013-04-20</td>
+                <td style="color: #FF0000">3051</td>
+                <td style="color: #FF0000">3103</td>
+                <td class="up">+52</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Croc Champ 2013 - Round 1</td>
+                <td>2013-04-16</td>
+                <td style="color: #FF0000">2990</td>
+                <td style="color: #FF0000">3051</td>
+                <td class="up">+61</td>
+                <td>1</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 172 (Div. 1)</td>
+                <td>2013-03-11</td>
+                <td style="color: #FF0000">3039</td>
+                <td style="color: #FF0000">2990</td>
+                <td class="down">-49</td>
+                <td>7</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 167 (Div. 1)</td>
+                <td>2013-02-14</td>
+                <td style="color: #FF0000">3026</td>
+                <td style="color: #FF0000">3039</td>
+                <td class="up">+13</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 165 (Div. 1)</td>
+                <td>2013-02-02</td>
+                <td style="color: #FF0000">3030</td>
+                <td style="color: #FF0000">3026</td>
+                <td class="down">-4</td>
+                <td>3</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 153 (Div. 1)</td>
+                <td>2012-12-07</td>
+                <td style="color: #FF0000">3016</td>
+                <td style="color: #FF0000">3030</td>
+                <td class="up">+14</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 150 (Div. 1)</td>
+                <td>2012-11-17</td>
+                <td style="color: #FF0000">3082</td>
+                <td style="color: #FF0000">3016</td>
+                <td class="down">-66</td>
+                <td>11</td>
+                <td>2</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 148 (Div. 1)</td>
+                <td>2012-11-05</td>
+                <td style="color: #FF0000">3034</td>
+                <td style="color: #FF0000">3082</td>
+                <td class="up">+48</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Bayan 2012-2013 Elimination Round (ACM ICPC Rules, English statements)</td>
+                <td>2012-11-02</td>
+                <td style="color: #FF0000">2977</td>
+                <td style="color: #FF0000">3034</td>
+                <td class="up">+57</td>
+                <td>1</td>
+                <td>6</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 146 (Div. 1)</td>
+                <td>2012-10-21</td>
+                <td style="color: #FF0000">3022</td>
+                <td style="color: #FF0000">2977</td>
+                <td class="down">-45</td>
+                <td>6</td>
+                <td>2</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 145 (Div. 1, ACM-ICPC Rules)</td>
+                <td>2012-10-16</td>
+                <td style="color: #FF0000">3042</td>
+                <td style="color: #FF0000">3022</td>
+                <td class="down">-20</td>
+                <td>3</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 144 (Div. 1)</td>
+                <td>2012-10-12</td>
+                <td style="color: #FF0000">2991</td>
+                <td style="color: #FF0000">3042</td>
+                <td class="up">+51</td>
+                <td>1</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 138 (Div. 1)</td>
+                <td>2012-09-17</td>
+                <td style="color: #FF0000">2973</td>
+                <td style="color: #FF0000">2991</td>
+                <td class="up">+18</td>
+                <td>2</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 134 (Div. 1)</td>
+                <td>2012-08-18</td>
+                <td style="color: #FF0000">2998</td>
+                <td style="color: #FF0000">2973</td>
+                <td class="down">-25</td>
+                <td>4</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 131 (Div. 1)</td>
+                <td>2012-07-31</td>
+                <td style="color: #FF0000">3010</td>
+                <td style="color: #FF0000">2998</td>
+                <td class="down">-12</td>
+                <td>3</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2012 Finals</td>
+                <td>2012-07-15</td>
+                <td style="color: #FF0000">3022</td>
+                <td style="color: #FF0000">3010</td>
+                <td class="down">-12</td>
+                <td>3</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 129 (Div. 1)</td>
+                <td>2012-07-12</td>
+                <td style="color: #FF0000">2964</td>
+                <td style="color: #FF0000">3022</td>
+                <td class="up">+58</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 125 (Div. 1)</td>
+                <td>2012-06-23</td>
+                <td style="color: #FF0000">2938</td>
+                <td style="color: #FF0000">2964</td>
+                <td class="up">+26</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 124 (Div. 1)</td>
+                <td>2012-06-12</td>
+                <td style="color: #FF0000">2902</td>
+                <td style="color: #FF0000">2938</td>
+                <td class="up">+36</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 122 (Div. 1)</td>
+                <td>2012-06-04</td>
+                <td style="color: #FF0000">2887</td>
+                <td style="color: #FF0000">2902</td>
+                <td class="up">+15</td>
+                <td>2</td>
+                <td>3</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 115</td>
+                <td>2012-04-14</td>
+                <td style="color: #FF0000">2877</td>
+                <td style="color: #FF0000">2887</td>
+                <td class="up">+10</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2012 Round 3</td>
+                <td>2012-04-09</td>
+                <td style="color: #FF0000">2919</td>
+                <td style="color: #FF0000">2877</td>
+                <td class="down">-42</td>
+                <td>8</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Croc Champ 2012 - Round 1</td>
+                <td>2012-04-07</td>
+                <td style="color: #FF0000">2906</td>
+                <td style="color: #FF0000">2919</td>
+                <td class="up">+13</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 114 (Div. 1)</td>
+                <td>2012-03-28</td>
+                <td style="color: #FF0000">2907</td>
+                <td style="color: #FF0000">2906</td>
+                <td class="down">-1</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2012 Round 2</td>
+                <td>2012-03-26</td>
+                <td style="color: #FF0000">2883</td>
+                <td style="color: #FF0000">2907</td>
+                <td class="up">+24</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>VK Cup 2012 Round 1</td>
+                <td>2012-03-12</td>
+                <td style="color: #FF0000">2877</td>
+                <td style="color: #FF0000">2883</td>
+                <td class="up">+6</td>
+                <td>3</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 110 (Div. 1)</td>
+                <td>2012-03-01</td>
+                <td style="color: #FF0000">2831</td>
+                <td style="color: #FF0000">2877</td>
+                <td class="up">+46</td>
+                <td>1</td>
+                <td>4</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 109 (Div. 1)</td>
+                <td>2012-02-25</td>
+                <td style="color: #FF0000">2783</td>
+                <td style="color: #FF0000">2831</td>
+                <td class="up">+48</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 107 (Div. 1)</td>
+                <td>2012-02-18</td>
+                <td style="color: #FF0000">2809</td>
+                <td style="color: #FF0000">2783</td>
+                <td class="down">-26</td>
+                <td>10</td>
+                <td>3</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 104 (Div. 1)</td>
+                <td>2012-01-22</td>
+                <td style="color: #FF0000">2762</td>
+                <td style="color: #FF0000">2809</td>
+                <td class="up">+47</td>
+                <td>1</td>
+                <td>5</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 102 (Div. 1)</td>
+                <td>2012-01-13</td>
+                <td style="color: #FF0000">2704</td>
+                <td style="color: #FF0000">2762</td>
+                <td class="up">+58</td>
+                <td>1</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Round 100</td>
+                <td>2012-01-05</td>
+                <td style="color: #FF0000">2670</td>
+                <td style="color: #FF0000">2704</td>
+                <td class="up">+34</td>
+                <td>3</td>
+                <td>6</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 94 (Div. 1 Only)</td>
+                <td>2011-11-15</td>
+                <td style="color: #FF0000">2693</td>
+                <td style="color: #FF0000">2670</td>
+                <td class="down">-23</td>
+                <td>5</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 93 (Div. 1 Only)</td>
+                <td>2011-11-10</td>
+                <td style="color: #FF0000">2683</td>
+                <td style="color: #FF0000">2693</td>
+                <td class="up">+10</td>
+                <td>2</td>
+                <td>4</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 92 (Div. 1 Only)</td>
+                <td>2011-11-04</td>
+                <td style="color: #FF0000">2661</td>
+                <td style="color: #FF0000">2683</td>
+                <td class="up">+22</td>
+                <td>1</td>
+                <td>5</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 91 (Div. 1 Only)</td>
+                <td>2011-10-28</td>
+                <td style="color: #FF0000">2635</td>
+                <td style="color: #FF0000">2661</td>
+                <td class="up">+26</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>School Regional Team Contest, Saratov, 2011</td>
+                <td>2011-10-18</td>
+                <td style="color: #FF0000">2612</td>
+                <td style="color: #FF0000">2635</td>
+                <td class="up">+23</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 88</td>
+                <td>2011-09-24</td>
+                <td style="color: #FF8C00">2595</td>
+                <td style="color: #FF0000">2612</td>
+                <td class="up">+17</td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 87 (Div. 1 Only)</td>
+                <td>2011-09-16</td>
+                <td style="color: #FF8C00">2560</td>
+                <td style="color: #FF8C00">2595</td>
+                <td class="up">+35</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 86 (Div. 1 Only)</td>
+                <td>2011-09-09</td>
+                <td style="color: #FF8C00">2549</td>
+                <td style="color: #FF8C00">2560</td>
+                <td class="up">+11</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 85 (Div. 1 Only)</td>
+                <td>2011-09-03</td>
+                <td style="color: #FF0000">2601</td>
+                <td style="color: #FF8C00">2549</td>
+                <td class="down">-52</td>
+                <td>22</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 84 (Div. 1 Only)</td>
+                <td>2011-08-30</td>
+                <td style="color: #FF0000">2613</td>
+                <td style="color: #FF0000">2601</td>
+                <td class="down">-12</td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 83 (Div. 1 Only)</td>
+                <td>2011-08-24</td>
+                <td style="color: #FF0000">2604</td>
+                <td style="color: #FF0000">2613</td>
+                <td class="up">+9</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 81</td>
+                <td>2011-08-14</td>
+                <td style="color: #FF0000">2609</td>
+                <td style="color: #FF0000">2604</td>
+                <td class="down">-5</td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 79 (Div. 1 Only)</td>
+                <td>2011-08-04</td>
+                <td style="color: #FF0000">2610</td>
+                <td style="color: #FF0000">2609</td>
+                <td class="down">-1</td>
+                <td>4</td>
+                <td>0</td>
+                <td>22</td>
+            </tr>
+            <tr>
+                <td>Yandex.Algorithm 2011: Finals</td>
+                <td>2011-07-15</td>
+                <td style="color: #FF0000">2646</td>
+                <td style="color: #FF0000">2610</td>
+                <td class="down">-36</td>
+                <td>7</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 74 (Div. 1 Only)</td>
+                <td>2011-06-17</td>
+                <td style="color: #FF0000">2632</td>
+                <td style="color: #FF0000">2646</td>
+                <td class="up">+14</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 73 (Div. 1 Only)</td>
+                <td>2011-06-08</td>
+                <td style="color: #FF0000">2624</td>
+                <td style="color: #FF0000">2632</td>
+                <td class="up">+8</td>
+                <td>4</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Yandex.Algorithm 2011: Round 2</td>
+                <td>2011-05-23</td>
+                <td style="color: #FF8C00">2586</td>
+                <td style="color: #FF0000">2624</td>
+                <td class="up">+38</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Yandex.Algorithm 2011: Round 1</td>
+                <td>2011-05-21</td>
+                <td style="color: #FF8C00">2547</td>
+                <td style="color: #FF8C00">2586</td>
+                <td class="up">+39</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 72 (Div. 1 Only)</td>
+                <td>2011-05-14</td>
+                <td style="color: #FF8C00">2514</td>
+                <td style="color: #FF8C00">2547</td>
+                <td class="up">+33</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Yandex.Algorithm 2011: Qualification 2</td>
+                <td>2011-05-07</td>
+                <td style="color: #FF8C00">2501</td>
+                <td style="color: #FF8C00">2514</td>
+                <td class="up">+13</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 69 (Div. 1 Only)</td>
+                <td>2011-04-20</td>
+                <td style="color: #FF8C00">2517</td>
+                <td style="color: #FF8C00">2501</td>
+                <td class="down">-16</td>
+                <td>11</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 68</td>
+                <td>2011-04-16</td>
+                <td style="color: #FF8C00">2494</td>
+                <td style="color: #FF8C00">2517</td>
+                <td class="up">+23</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 66</td>
+                <td>2011-04-10</td>
+                <td style="color: #FF8C00">2491</td>
+                <td style="color: #FF8C00">2494</td>
+                <td class="up">+3</td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Manthan 2011</td>
+                <td>2011-03-14</td>
+                <td style="color: #FF8C00">2455</td>
+                <td style="color: #FF8C00">2491</td>
+                <td class="up">+36</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 58</td>
+                <td>2011-02-26</td>
+                <td style="color: #FF8C00">2438</td>
+                <td style="color: #FF8C00">2455</td>
+                <td class="up">+17</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 56</td>
+                <td>2011-02-20</td>
+                <td style="color: #FF8C00">2419</td>
+                <td style="color: #FF8C00">2438</td>
+                <td class="up">+19</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 53</td>
+                <td>2011-01-26</td>
+                <td style="color: #AA00AA">2388</td>
+                <td style="color: #FF8C00">2419</td>
+                <td class="up">+31</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 48</td>
+                <td>2010-12-29</td>
+                <td style="color: #AA00AA">2351</td>
+                <td style="color: #AA00AA">2388</td>
+                <td class="up">+37</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>School Personal Contest #2 (Winter Computer School 2010/11) - Codeforces Beta Round 43 (ACM-ICPC Rules)</td>
+                <td>2010-12-05</td>
+                <td style="color: #AA00AA">2341</td>
+                <td style="color: #AA00AA">2351</td>
+                <td class="up">+10</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 41</td>
+                <td>2010-11-19</td>
+                <td style="color: #AA00AA">2311</td>
+                <td style="color: #AA00AA">2341</td>
+                <td class="up">+30</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 39</td>
+                <td>2010-11-06</td>
+                <td style="color: #AA00AA">2270</td>
+                <td style="color: #AA00AA">2311</td>
+                <td class="up">+41</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>School Personal Contest #1 (Winter Computer School 2010/11) - Codeforces Beta Round 38 (ACM-ICPC Rules)</td>
+                <td>2010-10-31</td>
+                <td style="color: #AA00AA">2256</td>
+                <td style="color: #AA00AA">2270</td>
+                <td class="up">+14</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 37</td>
+                <td>2010-10-26</td>
+                <td style="color: #AA00AA">2203</td>
+                <td style="color: #AA00AA">2256</td>
+                <td class="up">+53</td>
+                <td>3</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 33 (Codeforces format)</td>
+                <td>2010-10-08</td>
+                <td style="color: #AA00AA">2128</td>
+                <td style="color: #AA00AA">2203</td>
+                <td class="up">+75</td>
+                <td>1</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 28 (Codeforces format)</td>
+                <td>2010-09-18</td>
+                <td style="color: #0000FF">2098</td>
+                <td style="color: #AA00AA">2128</td>
+                <td class="up">+30</td>
+                <td>11</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 24</td>
+                <td>2010-07-26</td>
+                <td style="color: #0000FF">2081</td>
+                <td style="color: #0000FF">2098</td>
+                <td class="up">+17</td>
+                <td>20</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 23</td>
+                <td>2010-07-10</td>
+                <td style="color: #0000FF">2063</td>
+                <td style="color: #0000FF">2081</td>
+                <td class="up">+18</td>
+                <td>15</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 19</td>
+                <td>2010-06-25</td>
+                <td style="color: #0000FF">1967</td>
+                <td style="color: #0000FF">2063</td>
+                <td class="up">+96</td>
+                <td>2</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 13</td>
+                <td>2010-05-07</td>
+                <td style="color: #03A89E">1878</td>
+                <td style="color: #0000FF">1967</td>
+                <td class="up">+89</td>
+                <td>11</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 10</td>
+                <td>2010-04-16</td>
+                <td style="color: #03A89E">1764</td>
+                <td style="color: #03A89E">1878</td>
+                <td class="up">+114</td>
+                <td>18</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 8</td>
+                <td>2010-04-09</td>
+                <td style="color: #03A89E">1602</td>
+                <td style="color: #03A89E">1764</td>
+                <td class="up">+162</td>
+                <td>5</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Codeforces Beta Round 2</td>
+                <td>2010-02-26</td>
+                <td style="color: #CCCCCC">0</td>
+                <td style="color: #03A89E">1602</td>
+                <td class="up">+1602</td>
+                <td>14</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>
+    </div>
+    <div class="foot">
+        <p>数据来自 Codeforces API | 生成时间 May 30 2026</p>
+    </div>
+</div>
+</body>
+</html>
